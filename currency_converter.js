@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.exchangerate-api.com/v4/latest/";
+const BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/";
 
 const dropdowns = document.querySelectorAll(".dropdown select");
 const btn = document.querySelector("form button");
@@ -31,12 +31,14 @@ const updateExchangeRate = async () => {
     amtVal = 1;
     amount.value = "1";
   }
-  const URL = `${BASE_URL}${fromCurr.value.toUpperCase()}`;
+  let todayDate = new Date()
+  todayDate = todayDate.toISOString().split('T')[0]
+  const URL = `${BASE_URL}${fromCurr.value.toLowerCase()}.json`;
   let response = await fetch(URL);
   let data = await response.json();
-  let rate = data.rates[toCurr.value.toUpperCase()];
+  let rate = data[fromCurr.value.toLowerCase()][toCurr.value.toLowerCase()];
 
-  let finalAmount = amtVal * rate;
+  let finalAmount = parseInt(amtVal) * rate;
   msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`;
 };
 
